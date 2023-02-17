@@ -37,7 +37,7 @@ class RegisterComplete extends Component
             $description = 'Your profile was successfully saved'
         );
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->domain();
     }
 
     public function render()
