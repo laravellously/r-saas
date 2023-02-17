@@ -15,8 +15,7 @@
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.11",
         "stancl/tenancy": "^3.6",
-        "tcg/voyager": "^1.6",
-        "wireui/wireui": "^1.17"
+        "tcg/voyager": "^1.6"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

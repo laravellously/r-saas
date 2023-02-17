@@ -3,12 +3,9 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
-use WireUi\Traits\Actions;
 
 class RegisterComplete extends Component
 {
-    use Actions;
-
     public $name;
 
     public $password;
@@ -32,11 +29,6 @@ class RegisterComplete extends Component
         $user->password = bcrypt($data['password']);
         $user->save();
 
-        $this->notification()->success(
-            $title = 'Profile saved',
-            $description = 'Your profile was successfully saved'
-        );
-
         $domain = null;
 
         try {
@@ -44,15 +36,7 @@ class RegisterComplete extends Component
             $domain = $tenant->domains()->create([
                 'domain' => 'acme',
             ]);
-            $this->notification()->success(
-                $title = 'Domain created',
-                $description = 'Your domain was successfully created'
-            );
         } catch (\Throwable $th) {
-            $this->notification()->error(
-                $title = 'An error occured',
-                $description = $th->getMessage()
-            );
         }
 
         return redirect()->route('dashboard')->domain($domain);
