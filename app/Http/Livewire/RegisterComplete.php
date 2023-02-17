@@ -37,7 +37,25 @@ class RegisterComplete extends Component
             $description = 'Your profile was successfully saved'
         );
 
-        return redirect()->route('dashboard')->domain();
+        $domain = null;
+
+        try {
+            $tenant = tenancy()->find(auth()->id());
+            $domain = $tenant->domains()->create([
+                'domain' => 'acme',
+            ]);
+            $this->notification()->success(
+                $title = 'Domain created',
+                $description = 'Your domain was successfully created'
+            );
+        } catch (\Throwable $th) {
+            $this->notification()->error(
+                $title = 'An error occured',
+                $description = $th->getMessage()
+            );
+        }
+
+        return redirect()->route('dashboard')->domain($domain);
     }
 
     public function render()
