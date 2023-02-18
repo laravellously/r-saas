@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;800&display=swap" rel="stylesheet">
 
     <!-- Scripts -->
+    @wireUiScripts
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

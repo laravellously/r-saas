@@ -19,14 +19,14 @@
                 <form wire:submit.prevent="submit">
                     <div class="mt-6">
                         <div class="mt-1 rounded-md shadow-sm">
-                            <x-jet-input type="text" wire:model="name" label="Name" required
+                            <x-input type="text" wire:model="name" label="Name" required
                                 class="w-full form-input" />
                         </div>
                     </div>
 
                     <div class="mt-6">
                         <div class="mt-1 rounded-md shadow-sm">
-                            <x-jet-input type="password" wire:model="password" label="Password" required
+                            <x-inputs.password wire:model="password" label="Password" required
                                 class="w-full form-input" />
                         </div>
                     </div>

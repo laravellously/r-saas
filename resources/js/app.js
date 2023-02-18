@@ -1,7 +1,6 @@
 import Alpine from 'alpinejs'
 import focus from "@alpinejs/focus";
-import AlpineFloatingUI from '@awcodes/alpine-floating-ui'
-import NotificationsAlpinePlugin from '../../vendor/filament/notifications/dist/module.esm'
+import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 
 window.Alpine = Alpine;
 
@@ -10,7 +9,6 @@ window.csrf = document.querySelector("meta[name='csrf-token']").getAttribute("co
 
 Alpine.plugin(focus);
 Alpine.plugin(AlpineFloatingUI)
-Alpine.plugin(NotificationsAlpinePlugin)
 
 Alpine.start();
 

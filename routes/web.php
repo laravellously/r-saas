@@ -31,12 +31,6 @@ Route::middleware([
     'verified',
     // CheckIfSubscribed::class
 ])->group(function () {
-    // Route::view('dashboard', function () {
-    //     $tenant = Tenant::find(2);
-    //     tenancy()->initialize($tenant);
-    //     return view('tail');
-    // })->name('dashboard');
-    Route::view('set', 'set')->name('set');
     /*
     |   Subscription
     */
