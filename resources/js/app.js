@@ -1,14 +1,14 @@
 import Alpine from 'alpinejs'
 import focus from "@alpinejs/focus";
-import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 
 window.Alpine = Alpine;
+
+import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
 
 window.url = document.querySelector("meta[name='url']").getAttribute("content");
 window.csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 
 Alpine.plugin(focus);
-Alpine.plugin(AlpineFloatingUI)
 
 Alpine.start();
 

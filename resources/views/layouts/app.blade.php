@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-100">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
 <head>
     <meta charset="utf-8">
@@ -15,20 +15,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;500;600;800&display=swap" rel="stylesheet">
     <style>[x-cloak] { display: none !important; }</style>
     <!-- Scripts -->
-    @wireUiScripts
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Styles -->
+
+    @wireUiScripts
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @powerGridStyles
 </head>
 
 <body class="h-full font-sans antialiased">
-
-    <x-notifications />
-    <div class="h-[640px] bg-gray-100 overflow-y-auto">
+    <div class="overflow-y-auto bg-indigo-50">
         <div x-data="{ open: false }" @keydown.window.escape="open = false" class="min-h-full">
-            @include('layouts._partials._sidebarXs')
+            {{-- @include('layouts._partials._sidebarXs') --}}
             <!-- Static sidebar for desktop -->
             @include('layouts._partials._sidebarLg')
             <div class="flex flex-col flex-1 lg:pl-64">
@@ -48,7 +47,7 @@
     </div>
 
     @stack('modals')
-
+    <x-notifications />
     @livewireScripts
     @powerGridScripts
 </body>

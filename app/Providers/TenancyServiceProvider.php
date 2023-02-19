@@ -126,6 +126,10 @@ class TenancyServiceProvider extends ServiceProvider
             return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
         };
 
+        Middleware\InitializeTenancyBySubdomain::$onFail = function ($exception, $request, $next) {
+            return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
+        };
+
         // Middleware\InitializeTenancyByRequestData::$header = 'X-API-KEY';
     }
 
@@ -153,15 +157,16 @@ class TenancyServiceProvider extends ServiceProvider
     protected function makeTenancyMiddlewareHighestPriority()
     {
         $tenancyMiddleware = [
-            // InitializeTenancyById::class
+            //
             // Even higher priority than the initialization middleware
-            // Middleware\PreventAccessFromCentralDomains::class,
+            Middleware\PreventAccessFromCentralDomains::class,
 
-            // Middleware\InitializeTenancyByDomain::class,
-            // Middleware\InitializeTenancyBySubdomain::class,
-            // Middleware\InitializeTenancyByDomainOrSubdomain::class,
-            Middleware\InitializeTenancyByPath::class,
+            Middleware\InitializeTenancyByDomain::class,
+            Middleware\InitializeTenancyBySubdomain::class,
+            Middleware\InitializeTenancyByDomainOrSubdomain::class,
+            // Middleware\InitializeTenancyByPath::class,
             // Middleware\InitializeTenancyByRequestData::class,
+            InitializeTenancyById::class
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
