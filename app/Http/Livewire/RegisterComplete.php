@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Tenant;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\Actions;
 
@@ -13,9 +15,12 @@ class RegisterComplete extends Component
 
     public $password;
 
+    public $username;
+
     protected $rules = [
         'name' => 'required|min:6',
         'password' => 'required|min:8|alpha_num:ascii',
+        'username' => 'required|min:6|unique:users'
     ];
 
     // public function updated($propertyName)
@@ -29,33 +34,30 @@ class RegisterComplete extends Component
 
         $user = auth()->user();
         $user->name = $data['name'];
+        $user->username = $data['username'];
         $user->password = bcrypt($data['password']);
         $user->save();
+
+        // $tenant = config('tenancy.tenant_model')::where('user_id', $user->id)->first();
+        // $tenant->update([
+        //     'username' => $data['username']
+        // ]);
+
+        if (!session()->has('tenant_id')) {
+            $this->notification()->error(
+                $title = 'Error',
+                $description = 'No tenant in session'
+            );
+        }
+
+        Auth::loginUsingId($user->id);
 
         $this->notification()->success(
             $title = 'Profile saved',
             $description = 'Your profile was successfully saved'
         );
 
-        $domain = null;
-
-        try {
-            $tenant = tenancy()->find(auth()->id());
-            $domain = $tenant->domains()->create([
-                'domain' => 'acme',
-            ]);
-            $this->notification()->success(
-                $title = 'Domain created',
-                $description = 'Your domain was successfully created'
-            );
-        } catch (\Throwable $th) {
-            $this->notification()->error(
-                $title = 'An error occured',
-                $description = $th->getMessage()
-            );
-        }
-
-        return redirect()->route('tenant.dashboard', ['tenant' => $tenant->id]);
+        return redirect()->route('tenant.dashboard', ['tenant' => session('tenant_id')]);
     }
 
     public function render()

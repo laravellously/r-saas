@@ -16,7 +16,7 @@ class CheckIfSubscribed
      */
     public function handle(Request $request, Closure $next)
     {
-        if( auth()->user()->role->name == 'cancelled' ){
+        if( tenant()->user()->role->name == 'cancelled' ){
             return redirect()->route('landing');
         }
 

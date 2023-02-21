@@ -31,11 +31,11 @@ Route::middleware([
     'verified',
     // CheckIfSubscribed::class
 ])->group(function () {
-    Route::view('tenant', 'tenant')->name('tail');
-    Route::view('settings', 'set')->name('settings');
-    Route::view('users', 'users')->name('users');
-    Route::view('deposits', 'deposits')->name('deposits');
-    Route::view('transactions', 'transactions')->name('transactions');
+    // Route::view('tenant', 'tenant')->name('tail');
+    // Route::view('settings', 'set')->name('settings');
+    // Route::view('users', 'users')->name('users');
+    // Route::view('deposits', 'deposits')->name('deposits');
+    // Route::view('transactions', 'transactions')->name('transactions');
     /*
     |   Subscription
     */

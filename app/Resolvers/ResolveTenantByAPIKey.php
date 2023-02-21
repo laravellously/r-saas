@@ -2,12 +2,11 @@
 
 namespace App\Resolvers;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\Exceptions\IdentifyTenantException;
 use Stancl\Tenancy\Contracts\Tenant;
 use Stancl\Tenancy\Resolvers\Contracts\CachedTenantResolver;
 
-class ResolveTenantById extends CachedTenantResolver
+class ResolveTenantByAPIKey extends CachedTenantResolver
 {
     /** @var bool */
     public static $shouldCache = false;
@@ -24,7 +23,9 @@ class ResolveTenantById extends CachedTenantResolver
 
         /** @var Tenant|null $tenant */
 
-        $tenant = config('tenancy.tenant_model')::where('user_id', $payload)->first();
+        if (is_null($payload)) throw new IdentifyTenantException($payload);
+
+        $tenant = config('tenancy.tenant_model')::where('api_key', $payload)->first();
 
         if ($tenant) return $tenant;
 
@@ -34,7 +35,7 @@ class ResolveTenantById extends CachedTenantResolver
     public function getArgsForTenant(Tenant $tenant): array
     {
         return [
-            [$tenant->user_id],
+            [$tenant->api_key],
         ];
     }
 }

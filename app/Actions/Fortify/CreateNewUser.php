@@ -2,14 +2,15 @@
 
 namespace App\Actions\Fortify;
 
-use App\Models\Tenant;
 use App\Models\User;
+use App\Models\Wallet;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 use TCG\Voyager\Models\Role;
-use Laravel\Fortify\Rules\Password;
 
 class CreateNewUser implements CreatesNewUsers
 {
@@ -27,33 +28,37 @@ class CreateNewUser implements CreatesNewUsers
         Validator::make($input, [
             'name' => ['string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['string'],
+            'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
         ])->validate();
 
-        $user = User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'role_id' => $role->id
-        ]);
+        // create user wallet based on plan
 
-        $user->createToken('Rimplenet API');
+        return DB::transaction(function () use ($input, $role) {
+            return tap(User::create([
+                'name' => $input['name'],
+                'email' => $input['email'],
+                'username' => $input['username'],
+                'password' => Hash::make($input['password']),
+                'role_id' => $role->id
+            ]), function (User $user) {
+                // foreach role->wallet_type
+                $this->createWallet($user);
+            });
+        });
+    }
 
-        Tenant::create([
-            'user_id' => $user->id
-        ]);
-
-        // return DB::transaction(function () use ($input) {
-        //     return tap(User::create([
-        //         'name' => $input['name'],
-        //         'email' => $input['email'],
-        //         'password' => Hash::make($input['password']),
-        //     ]), function (User $user) {
-        //         $this->createTeam($user);
-        //     });
-        // });
-
-        return $user;
+    protected function createWallet(User $user): void
+    {
+        $user->wallets()->saveQuietly(Wallet::forceCreate([
+            'name' => 'US Dollar',
+            'address' => random_string(),
+            'symbol' => 'USD',
+            'symbol_position' => 'BEFORE',
+            'wallet_type' => 'FIAT',
+            'wallet_decimal' => 2,
+            'max_withdrawable_amount' => 100,
+            'user_id' => $user->id,
+        ]));
     }
 }

@@ -21,8 +21,7 @@ class CreateTenantsTable extends Migration
 
             // your custom columns may go here
             $table->foreignIdFor(User::class);
-
-            // Plan
+            $table->uuid('api_key');
 
             $table->timestamps();
             $table->json('data')->nullable();

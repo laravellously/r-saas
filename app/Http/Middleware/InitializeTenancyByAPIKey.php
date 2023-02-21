@@ -3,20 +3,17 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\IdentifyTenantException;
-use App\Resolvers\ResolveTenantById;
+use App\Resolvers\ResolveTenantByAPIKey;
 use Closure;
 use Illuminate\Http\Request;
-use Laravel\Sanctum\PersonalAccessToken;
+// use Laravel\Sanctum\PersonalAccessToken;
 use Stancl\Tenancy\Tenancy;
 use Stancl\Tenancy\Middleware\IdentificationMiddleware;
 
-class InitializeTenancyById extends IdentificationMiddleware
+class InitializeTenancyByAPIKey extends IdentificationMiddleware
 {
     /** @var string|null */
-    public static $header = null;
-
-    /** @var string|null */
-    public static $queryParameter = null;
+    public static $header = 'X-API-Key';
 
     /** @var callable|null */
     public static $onFail;
@@ -27,7 +24,7 @@ class InitializeTenancyById extends IdentificationMiddleware
     /** @var TenantResolver */
     protected $resolver;
 
-    public function __construct(Tenancy $tenancy, ResolveTenantById $resolver)
+    public function __construct(Tenancy $tenancy, ResolveTenantByAPIKey $resolver)
     {
         $this->tenancy = $tenancy;
         $this->resolver = $resolver;
@@ -55,12 +52,19 @@ class InitializeTenancyById extends IdentificationMiddleware
 
     protected function getPayload(Request $request): int|string|null
     {
-        if ($request->is('/api')) {
-            $token = PersonalAccessToken::findToken($request->bearerToken());
-            $user = $token->tokenable;
-            return $user->id;
-        } else {
-            return auth()->id();
+        $tenant = null;
+        if (static::$header && $request->hasHeader(static::$header)) {
+            $tenant = $request->header(static::$header);
         }
+
+        return $tenant;
+
+        // if ($request->is('/api')) {
+        //     $token = PersonalAccessToken::findToken($request->bearerToken());
+        //     $user = $token->tokenable;
+        //     return $user->id;
+        // } else {
+        //     return auth()->id();
+        // }
     }
 }

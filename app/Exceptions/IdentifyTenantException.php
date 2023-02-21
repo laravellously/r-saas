@@ -9,9 +9,9 @@ use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 
 class IdentifyTenantException extends TenantCouldNotBeIdentifiedException implements ProvidesSolution
 {
-    public function __construct($tenant_token)
+    public function __construct($tenant)
     {
-        parent::__construct("Tenant could not be identified: $tenant_token");
+        parent::__construct("Tenant could not be identified: $tenant");
     }
 
     public function getSolution(): Solution

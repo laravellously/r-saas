@@ -1,9 +1,11 @@
 import Alpine from 'alpinejs'
+import axios from 'axios';
 import focus from "@alpinejs/focus";
 
-window.Alpine = Alpine;
-
 import './../../vendor/power-components/livewire-powergrid/dist/powergrid'
+
+window.Alpine = Alpine;
+window.axios = axios;
 
 window.url = document.querySelector("meta[name='url']").getAttribute("content");
 window.csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");

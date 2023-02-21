@@ -26,6 +26,13 @@
 
                     <div class="mt-6">
                         <div class="mt-1 rounded-md shadow-sm">
+                            <x-input type="text" wire:model="username" label="Username" required
+                                class="w-full form-input" />
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <div class="mt-1 rounded-md shadow-sm">
                             <x-inputs.password wire:model="password" label="Password" required
                                 class="w-full form-input" />
                         </div>

@@ -3,7 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\InitializeTenancyById;
+use App\Http\Middleware\InitializeTenancyByAPIKey;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +15,6 @@ use App\Http\Middleware\InitializeTenancyById;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::post('login',[AuthController::class, 'login']);
-Route::post('logout',[AuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -35,13 +32,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 
 Route::middleware([
-    'auth:sanctum',
-    InitializeTenancyById::class
+    InitializeTenancyByAPIKey::class
 ])->group(function () {
-    Route::get('tenancy', function () {
-        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+    // Public Routes
+    Route::get('test', function () {
+        return response()->json([
+            'message' => tenant('id')
+        ]);
     });
-    // Login
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+    });
     // Register
-    // Transaction
+    // TransactionCreate
 });

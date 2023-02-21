@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Fortify\CreateNewUser;
+use App\Models\Tenant;
 use App\Models\User;
 use App\Models\Plan;
 use App\Models\Subscription;
@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class SubscriptionController extends Controller
@@ -98,17 +99,32 @@ class SubscriptionController extends Controller
                             $user = User::where('email', $subscription->user_email)->first();
                         } else {
                             // create a new user
-                            $registration = new CreateNewUser;
+                            // create tenant: id => username
+                            // tenant->api_key
+
+                            $uniqId = uniqid();
+
+                            $role = Role::where('name', '=', config('voyager.user.default_role'))->first();
 
                             $user_data = [
-                                'name' => '',
+                                'name' => $uniqId,
                                 'email' => $subscription->user_email,
-                                'password' => Hash::make(uniqid())
+                                'password' => Hash::make($uniqId),
+                                'role_id' => $role->id
                             ];
 
-                            $user = $registration->create($user_data);
+                            $user = User::create($user_data);
 
-                            Auth::guard(config('jetstream.guard'))->login($user);
+                            $tenant_id = random_string(8);
+                            session(['tenant_id' => $tenant_id]);
+
+                            $tenant = Tenant::create([
+                                'id' => $tenant_id,
+                                'user_id' => $user->id,
+                                'api_key' => Str::orderedUuid()
+                            ]);
+
+                            Auth::guard(config('fortify.guard'))->login($user);
                         }
                     } else {
                         $user = auth()->user();
@@ -129,6 +145,11 @@ class SubscriptionController extends Controller
                         'next_payment_at' => $subscription->next_payment->date,
                         'cancel_url' => $subscription->cancel_url,
                         'update_url' => $subscription->update_url
+                    ]);
+
+                    $tenant->update([
+                        'plan' => $plan,
+                        'subscription' => $subscription
                     ]);
 
                     $status = 1;

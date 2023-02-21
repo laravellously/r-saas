@@ -8,7 +8,7 @@
         <nav class="flex flex-col flex-1 mt-5 overflow-y-auto divide-y divide-cyan-800" aria-label="Sidebar">
             <div class="px-2 space-y-1">
 
-                <a href="{{ route('tail') }}"
+                <a href="{{ route('tenant.dashboard', ['tenant' => tenant('id')]) }}"
                     class="flex items-center px-2 py-2 text-sm font-medium leading-6 {{ is_active_nav_class('tail') }} rounded-md group">
                     <svg class="flex-shrink-0 w-6 h-6 mr-4 text-cyan-200" x-description="Heroicon name: outline/home"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -20,7 +20,7 @@
                     Home
                 </a>
 
-                <a href="{{ route('users') }}"
+                <a href="{{ route('tenant.users', ['tenant' => tenant('id')]) }}"
                     class="flex items-center px-2 py-2 text-sm font-medium leading-6 rounded-md {{ is_active_nav_class('users') }} group">
                     <svg class="flex-shrink-0 w-6 h-6 mr-4 text-cyan-200"
                         x-description="Heroicon name: outline/user-group" xmlns="http://www.w3.org/2000/svg"
@@ -32,13 +32,13 @@
                     Users
                 </a>
 
-                <a href="{{ route('transactions') }}"
+                <a href="{{ route('tenant.transactions', ['tenant' => tenant('id')]) }}"
                     class="flex items-center px-2 py-2 text-sm font-medium leading-6 rounded-md {{ is_active_nav_class('transactions') }} group">
                     <x-icon name="switch-horizontal" class="flex-shrink-0 w-6 h-6 mr-4 text-cyan-200" />
                     Transactions
                 </a>
 
-                <a href="{{ route('deposits') }}"
+                <a href="{{ route('tenant.deposits', ['tenant' => tenant('id')]) }}"
                     class="flex items-center px-2 py-2 text-sm font-medium leading-6 rounded-md {{ is_active_nav_class('deposits') }} group">
                     <x-icon name="save" class="flex-shrink-0 w-6 h-6 mr-4 text-cyan-200" />
                     Deposits
@@ -84,7 +84,7 @@
             <div class="pt-6 mt-6">
                 <div class="px-2 space-y-1">
 
-                    <a href="{{ route('settings') }}"
+                    <a href="{{ route('tenant.settings', ['tenant' => tenant('id')]) }}"
                         class="flex items-center px-2 py-2 text-sm font-medium leading-6 rounded-md {{ is_active_nav_class('settings') }} group">
                         <svg class="w-6 h-6 mr-4 text-cyan-200" x-description="Heroicon name: outline/cog"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"

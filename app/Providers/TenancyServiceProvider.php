@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Http\Middleware\InitializeTenancyById;
+use App\Http\Middleware\InitializeTenancyByAPIKey;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -101,7 +101,7 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        InitializeTenancyById::$onFail = function ($exception, $request, $next) {
+        InitializeTenancyByAPIKey::$onFail = function ($exception, $request, $next) {
             if($request->expectsJson()){
                 return response()->json([
                     'message' => $exception,
@@ -110,6 +110,8 @@ class TenancyServiceProvider extends ServiceProvider
         };
 
         UserImpersonation::$ttl = 120; // 2 minutes
+
+        \Stancl\Tenancy\Listeners\UpdateSyncedResource::$shouldQueue = true;
 
         \Stancl\Tenancy\Features\TenantConfig::$storageToConfigMap = [
             'paypal_api_key' => 'services.paypal.api_key',
@@ -122,13 +124,13 @@ class TenancyServiceProvider extends ServiceProvider
         $this->makeTenancyMiddlewareHighestPriority();
 
         /* added custom */
-        Middleware\InitializeTenancyByDomain::$onFail = function ($exception, $request, $next) {
-            return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
-        };
+        // Middleware\InitializeTenancyByDomain::$onFail = function ($exception, $request, $next) {
+        //     return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
+        // };
 
-        Middleware\InitializeTenancyBySubdomain::$onFail = function ($exception, $request, $next) {
-            return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
-        };
+        // Middleware\InitializeTenancyBySubdomain::$onFail = function ($exception, $request, $next) {
+        //     return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
+        // };
 
         // Middleware\InitializeTenancyByRequestData::$header = 'X-API-KEY';
     }
@@ -159,14 +161,14 @@ class TenancyServiceProvider extends ServiceProvider
         $tenancyMiddleware = [
             //
             // Even higher priority than the initialization middleware
-            Middleware\PreventAccessFromCentralDomains::class,
+            // Middleware\PreventAccessFromCentralDomains::class,
 
-            Middleware\InitializeTenancyByDomain::class,
-            Middleware\InitializeTenancyBySubdomain::class,
-            Middleware\InitializeTenancyByDomainOrSubdomain::class,
-            // Middleware\InitializeTenancyByPath::class,
+            // Middleware\InitializeTenancyByDomain::class,
+            // Middleware\InitializeTenancyBySubdomain::class,
+            // Middleware\InitializeTenancyByDomainOrSubdomain::class,
+            Middleware\InitializeTenancyByPath::class,
             // Middleware\InitializeTenancyByRequestData::class,
-            InitializeTenancyById::class
+            InitializeTenancyByAPIKey::class
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {

@@ -13,7 +13,8 @@ class Deposit extends Model
         'gateway',
         'wallet_id',
         'status',
-        'amount'
+        'amount',
+        'fee'
     ];
 
     public function wallet()

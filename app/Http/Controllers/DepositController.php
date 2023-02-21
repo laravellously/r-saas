@@ -6,6 +6,7 @@ use App\Models\Deposit;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 
 class DepositController extends Controller
@@ -18,15 +19,6 @@ class DepositController extends Controller
         'skrill',
         'voguepay'
     ];
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -58,7 +50,8 @@ class DepositController extends Controller
         }
 
         $data = [
-            'status' => 'PENDING'
+            'status' => 'PENDING',
+            'fee' => 0
         ];
 
         $data = Arr::prepend($data, $request->all());
@@ -66,6 +59,16 @@ class DepositController extends Controller
         $deposit = Deposit::create($data);
 
         if($deposit){
+            $controller = __NAMESPACE__ . '\\Gateway\\' . Str::ucfirst($request->gateway) . '\\ProcessController';
+            $deposit_data = $controller::process($deposit);
+            $deposit_data = json_decode($deposit_data);
+
+            if(isset($deposit_data->redirect))
+            {
+                return response()->json([
+                    'message' => $deposit_data->redirect_url
+                ]);
+            }
             return response()->json([
                 'message' => 'Deposit created successfully'
             ]);
