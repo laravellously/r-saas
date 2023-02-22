@@ -21,6 +21,7 @@
 </head>
 
 <body>
+    <x-notifications />
     @include('layouts.partials.header')
     <div class="font-sans antialiased text-gray-900">
         {{ $slot }}

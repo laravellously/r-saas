@@ -111,7 +111,7 @@ class TenancyServiceProvider extends ServiceProvider
 
         UserImpersonation::$ttl = 120; // 2 minutes
 
-        \Stancl\Tenancy\Listeners\UpdateSyncedResource::$shouldQueue = true;
+        \Stancl\Tenancy\Listeners\UpdateSyncedResource::$shouldQueue = false;
 
         \Stancl\Tenancy\Features\TenantConfig::$storageToConfigMap = [
             'paypal_api_key' => 'services.paypal.api_key',
@@ -122,17 +122,6 @@ class TenancyServiceProvider extends ServiceProvider
         $this->mapRoutes();
 
         $this->makeTenancyMiddlewareHighestPriority();
-
-        /* added custom */
-        // Middleware\InitializeTenancyByDomain::$onFail = function ($exception, $request, $next) {
-        //     return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
-        // };
-
-        // Middleware\InitializeTenancyBySubdomain::$onFail = function ($exception, $request, $next) {
-        //     return redirect()->route('landing'); //can be a custom url it redirects to or you can show a custom error page
-        // };
-
-        // Middleware\InitializeTenancyByRequestData::$header = 'X-API-KEY';
     }
 
     protected function bootEvents()

@@ -23,7 +23,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        $role = Role::where('name', '=', config('voyager.user.default_role'))->first();
+        // $role = Role::where('name', '=', config('voyager.user.default_role'))->first();
 
         Validator::make($input, [
             'name' => ['string', 'max:255'],
@@ -34,18 +34,24 @@ class CreateNewUser implements CreatesNewUsers
 
         // create user wallet based on plan
 
-        return DB::transaction(function () use ($input, $role) {
-            return tap(User::create([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'username' => $input['username'],
-                'password' => Hash::make($input['password']),
-                'role_id' => $role->id
-            ]), function (User $user) {
+        return DB::transaction(function () use ($input) {
+            return tap($this->createUser($input), function (User $user) {
                 // foreach role->wallet_type
                 $this->createWallet($user);
             });
         });
+    }
+
+    protected function createUser(array $input): User
+    {
+        $user = new User;
+        $user->name = $input['name'];
+        $user->email = $input['email'];
+        $user->username = $input['username'];
+        $user->password = Hash::make($input['password']);
+        $user->saveQuietly();
+
+        return $user;
     }
 
     protected function createWallet(User $user): void

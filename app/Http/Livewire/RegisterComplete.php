@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use WireUi\Traits\Actions;
@@ -32,32 +32,45 @@ class RegisterComplete extends Component
     {
         $data = $this->validate();
 
-        $user = auth()->user();
+        $user = Auth::user();
         $user->name = $data['name'];
         $user->username = $data['username'];
         $user->password = bcrypt($data['password']);
-        $user->save();
-
-        // $tenant = config('tenancy.tenant_model')::where('user_id', $user->id)->first();
-        // $tenant->update([
-        //     'username' => $data['username']
-        // ]);
+        $user->saveQuietly();
 
         if (!session()->has('tenant_id')) {
             $this->notification()->error(
                 $title = 'Error',
                 $description = 'No tenant in session'
             );
+
+            return false;
         }
 
-        Auth::loginUsingId($user->id);
+        $tenant_id = session('tenant_id');
+
+        tenancy()->initialize($tenant_id);
+        // auth('web')->attempt(['email' => $user->email, 'password' => $user->password], true);
+
+        $u = new User();
+
+        $u->name = $data['name'];
+        $u->email = $user->email;
+        $u->password = bcrypt($data['password']);
+        $u->global_id = $user->global_id;
+        $u->username = $data['username'];
+        $u->saveQuietly();
+
+        // tenant()->run(function () use ($user) {
+        //     auth('web')->attempt(['email' => $user->email, 'password' => $user->password], true);
+        // });
 
         $this->notification()->success(
             $title = 'Profile saved',
             $description = 'Your profile was successfully saved'
         );
 
-        return redirect()->route('tenant.dashboard', ['tenant' => session('tenant_id')]);
+        return redirect()->route('tenant.dashboard', ['tenant' => $tenant_id]);
     }
 
     public function render()

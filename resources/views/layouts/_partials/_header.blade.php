@@ -3,6 +3,7 @@
     <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
+                <p>{{ Auth::user()->email }}</p>
                 {{-- <!-- Logo -->
                 <div class="flex items-center shrink-0">
                     <a href="{{ route('dashboard') }}">
@@ -71,11 +72,11 @@
 
                 <!-- Settings Dropdown -->
                 <div class="relative ml-3">
-                    <x-jet-dropdown align="right" width="48">
+                    {{-- <x-jet-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                                 <button class="flex text-sm transition border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300">
-                                    <img class="object-cover w-8 h-8 rounded-full" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                    <img class="object-cover w-8 h-8 rounded-full" src="{{ auth('web')->user()->profile_photo_url }}" alt="{{ auth('web')->user()->name }}" />
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md">
@@ -118,7 +119,7 @@
                                 </x-jet-dropdown-link>
                             </form>
                         </x-slot>
-                    </x-jet-dropdown>
+                    </x-jet-dropdown> --}}
                 </div>
             </div>
 
@@ -143,7 +144,7 @@
         </div> --}}
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
+        {{-- <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="flex items-center px-4">
                 @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
                     <div class="mr-3 shrink-0">
@@ -210,6 +211,6 @@
                     @endforeach
                 @endif
             </div>
-        </div>
+        </div> --}}
     </div>
 </nav>

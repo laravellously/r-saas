@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CentralUser;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Models\Plan;
@@ -108,12 +109,13 @@ class SubscriptionController extends Controller
 
                             $user_data = [
                                 'name' => $uniqId,
+                                'global_id' => Str::orderedUuid(),
                                 'email' => $subscription->user_email,
                                 'password' => Hash::make($uniqId),
                                 'role_id' => $role->id
                             ];
 
-                            $user = User::create($user_data);
+                            $user = CentralUser::create($user_data);
 
                             $tenant_id = random_string(8);
                             session(['tenant_id' => $tenant_id]);
@@ -124,7 +126,7 @@ class SubscriptionController extends Controller
                                 'api_key' => Str::orderedUuid()
                             ]);
 
-                            Auth::guard(config('fortify.guard'))->login($user);
+                            Auth::login($user);
                         }
                     } else {
                         $user = auth()->user();

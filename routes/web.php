@@ -4,7 +4,6 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Livewire\RegisterComplete;
 use App\Http\Middleware\CheckIfSubscribed;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Contracts\Tenant;
 use TCG\Voyager\Facades\Voyager;
 /*
 |--------------------------------------------------------------------------
@@ -22,8 +21,7 @@ Route::post('checkout', [SubscriptionController::class, 'checkout'])->name('chec
 Route::post('paddle/webhook', [SubscriptionController::class, 'webhook'])->name('webhook');
 
 Route::view('pricing', 'pricing')
-    ->name('pricing')
-    ->middleware(['guest:' . config('fortify.guard')]);
+    ->name('pricing');
 
 Route::middleware([
     'auth:sanctum',
@@ -31,11 +29,6 @@ Route::middleware([
     'verified',
     // CheckIfSubscribed::class
 ])->group(function () {
-    // Route::view('tenant', 'tenant')->name('tail');
-    // Route::view('settings', 'set')->name('settings');
-    // Route::view('users', 'users')->name('users');
-    // Route::view('deposits', 'deposits')->name('deposits');
-    // Route::view('transactions', 'transactions')->name('transactions');
     /*
     |   Subscription
     */
