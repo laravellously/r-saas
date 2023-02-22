@@ -32,18 +32,30 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 
 Route::middleware([
-    InitializeTenancyByAPIKey::class
+    InitializeTenancyByAPIKey::class,
+    \Illuminate\Session\Middleware\StartSession::class,
+    // Stancl\Tenancy\Middleware\ScopeSessions::class
 ])->group(function () {
     // Public Routes
-    Route::get('test', function () {
-        return response()->json([
-            'message' => tenant('id')
-        ]);
+    Route::post('test', function (Request $request){
+        try {
+            auth('api')->attempt($request->all());
+            return response()->json([
+                'message' => 'Login successful',
+                'token' => auth('api')->user()
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], 401);
+        }
     });
+
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('api')->group(function () {
+        Route::get('me', [AuthController::class, 'me']);
         Route::post('logout', [AuthController::class, 'logout']);
     });
     // Register
