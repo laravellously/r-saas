@@ -19,10 +19,10 @@ return new class extends Migration
             $table->foreignIdFor(Wallet::class, 'origin');
             $table->foreignIdFor(Wallet::class, 'destination');
             $table->string('receipt');
-            $table->string('fee');
+            $table->string('fee')->nullable();
             $table->string('amount');
             $table->enum('type', ['CREDIT','DEBIT','TRANSFER']);
-            $table->mediumText('note');
+            $table->mediumText('note')->nullable();
 
             $table->timestamps();
         });

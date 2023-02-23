@@ -102,7 +102,7 @@ class TenancyServiceProvider extends ServiceProvider
     public function boot()
     {
         InitializeTenancyByAPIKey::$onFail = function ($exception, $request, $next) {
-            if($request->expectsJson()){
+            if ($request->expectsJson()) {
                 return response()->json([
                     'message' => $exception,
                 ], 401);

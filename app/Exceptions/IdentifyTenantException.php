@@ -11,7 +11,7 @@ class IdentifyTenantException extends TenantCouldNotBeIdentifiedException implem
 {
     public function __construct($tenant)
     {
-        parent::__construct("Tenant could not be identified: $tenant");
+        parent::__construct("API_KEY_MISSING");
     }
 
     public function getSolution(): Solution

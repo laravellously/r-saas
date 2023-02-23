@@ -1,5 +1,6 @@
 <?php
 
+use App\Providers\SessionServiceProvider;
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -197,6 +198,7 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         App\Providers\TenancyServiceProvider::class,
+        SessionServiceProvider::class
     ],
 
     /*

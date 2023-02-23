@@ -1,24 +1,11 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\DepositController;
+use App\Http\Middleware\CheckAuth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\InitializeTenancyByAPIKey;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -32,32 +19,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 
 Route::middleware([
-    InitializeTenancyByAPIKey::class,
-    \Illuminate\Session\Middleware\StartSession::class,
-    // Stancl\Tenancy\Middleware\ScopeSessions::class
+    InitializeTenancyByAPIKey::class
 ])->group(function () {
-    // Public Routes
-    Route::post('test', function (Request $request){
-        try {
-            auth('api')->attempt($request->all());
-            return response()->json([
-                'message' => 'Login successful',
-                'token' => auth('api')->user()
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => $th->getMessage()
-            ], 401);
-        }
-    });
 
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
 
-    Route::middleware('api')->group(function () {
+    Route::middleware([
+        CheckAuth::class
+    ])->group(function () {
         Route::get('me', [AuthController::class, 'me']);
         Route::post('logout', [AuthController::class, 'logout']);
     });
-    // Register
+
     // TransactionCreate
+    Route::post('deposit', [DepositController::class, 'store']);
+    Route::get('deposit/{wallet}', [DepositController::class, 'index']);
+
+    Route::post('transfer', [TransactionController::class, 'transfer']);
+    Route::get('transaction/{receipt}', [TransactionController::class, 'show']);
 });

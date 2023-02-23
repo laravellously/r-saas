@@ -16,7 +16,8 @@ class Transaction extends Model
         'destination',
         'type',
         'status',
-        'receipt'
+        'receipt',
+        'fee'
     ];
 
     // public function user()

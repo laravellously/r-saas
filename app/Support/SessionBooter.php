@@ -41,12 +41,14 @@ class SessionBooter implements TenancyBootstrapper
 
     protected function purgeSessionConfig()
     {
-        Artisan::call('config:clear');
+        tenant()->run(function () {
+            Artisan::call('config:clear');
 
-        $this->config->offsetUnset('session.driver');
-        $this->config->offsetUnset('session.connection');
-        $this->config->offsetUnset('session.path');
+            $this->config->offsetUnset('session.driver');
+            $this->config->offsetUnset('session.connection');
+            $this->config->offsetUnset('session.path');
 
-        Artisan::call('config:cache');
+            // Artisan::call('config:cache');
+        });
     }
 }

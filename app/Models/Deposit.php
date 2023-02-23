@@ -14,7 +14,12 @@ class Deposit extends Model
         'wallet_id',
         'status',
         'amount',
+        'receipt',
         'fee'
+    ];
+
+    protected $hidden = [
+        'id'
     ];
 
     public function wallet()

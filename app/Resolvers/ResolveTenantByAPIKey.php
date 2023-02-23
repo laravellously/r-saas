@@ -5,6 +5,9 @@ namespace App\Resolvers;
 use App\Exceptions\IdentifyTenantException;
 use Stancl\Tenancy\Contracts\Tenant;
 use Stancl\Tenancy\Resolvers\Contracts\CachedTenantResolver;
+use Exception;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 
 class ResolveTenantByAPIKey extends CachedTenantResolver
 {
@@ -27,9 +30,14 @@ class ResolveTenantByAPIKey extends CachedTenantResolver
 
         $tenant = config('tenancy.tenant_model')::where('api_key', $payload)->first();
 
-        if ($tenant) return $tenant;
+        if (is_null($tenant)) {
+            throw new HttpResponseException(response()->json([
+                'message' => 'INVALID_API_KEY'
+            ], Response::HTTP_FORBIDDEN));
+        } else {
+            return $tenant;
+        }
 
-        throw new IdentifyTenantException($payload);
     }
 
     public function getArgsForTenant(Tenant $tenant): array

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('symbol');
-            $table->string('address')->unique();
+            $table->string('address')->unique()->index();
             $table->foreignIdFor(User::class);
             $table->enum('symbol_position', ['BEFORE', 'AFTER']);
             $table->enum('wallet_type', ['FIAT', 'CRYPTO']);

@@ -4,6 +4,9 @@ namespace App\Exceptions;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -48,11 +51,19 @@ class Handler extends ExceptionHandler
             // report to sentry
         });
 
+        $this->renderable(function (ValidationException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        });
+
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
-                    'message' => 'Record not found.'
-                ], 404);
+                    'message' => 'ROUTE_OR_RECORD_NOT_FOUND'
+                ], Response::HTTP_NOT_FOUND);
             }
         });
 
@@ -60,7 +71,7 @@ class Handler extends ExceptionHandler
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => $e->getMessage(),
-                ], 401);
+                ], Response::HTTP_FORBIDDEN);
             }
         });
 
@@ -68,7 +79,15 @@ class Handler extends ExceptionHandler
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => $e->getMessage(),
-                ], 500);
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        });
+
+        $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                ], Response::HTTP_METHOD_NOT_ALLOWED);
             }
         });
     }

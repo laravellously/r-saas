@@ -4,81 +4,73 @@ namespace App\Http\Controllers\API;
 
 use App\Actions\Fortify\CreateNewUser;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller
 {
-    public function me(){
+    public function me(Request $request)
+    {
+        $user = getUserFromToken($request->bearerToken());
         return response()->json([
-            'message' => auth('api')->user(),
-            'status' => 'ok'
-        ]);
+            'message' => $user->load('wallets'),
+            // 'wallets' => $user->wallets
+        ], Response::HTTP_OK);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        // Throw if authenticated
-        if(auth('api')->check()){
+        // Retrieve the validated input data...
+        $validated = $request->validated();
+
+        if(!$user = User::where('email', $validated['email'])->firstOrFail()) {
             return response()->json([
-                'message' => 'Already an authenticated user'
-            ], 400);
+                'message' => 'WRONG CREDENTIALS',
+            ])->setStatusCode(Response::HTTP_BAD_REQUEST);
+        }
+        if(!$hash = Hash::check($validated['password'], $user->password)) {
+            return response()->json([
+                'message' => 'WRONG CREDENTIALS',
+            ])->setStatusCode(Response::HTTP_BAD_REQUEST);
         }
 
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+        return response()->json([
+            'message' => 'LOGIN SUCCESS',
+            'token' => $user->createToken('rimplenet_starter')->plainTextToken,
+        ], 200);
+    }
 
+    public function register(Request $request)
+    {
         try {
-            auth('api')->attempt($request->all());
+            $user = app(CreateNewUser::class)->create($request->all());
             return response()->json([
-                'message' => 'Login successful',
-                'token' => auth('api')->user()->createToken('rimplenet_starter')->plainTextToken,
-            ], 200);
+                'message' => 'REGISTER SUCCESS',
+                'user' => $user,
+                'token' => $user->createToken('rimplenet_starter')->plainTextToken,
+            ], Response::HTTP_CREATED);
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => $th->getMessage()
-            ], 401);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function register(Request $request){
-        tenant()->run(function () use ($request) {
-            if(Auth::check()){
-                return response()->json([
-                    'message' => 'Already an authenticated user'
-                ], 400);
-            }
-
-            try {
-                $user = app(CreateNewUser::class)->create($request->all());
-                $user = Auth::guard('api')->loginUsingId($user->id);
-                return response()->json([
-                    'user' => $user,
-                    'token' => $user->createToken('rimplenet_starter')->plainTextToken,
-                ]);
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'message' => $th->getMessage()
-                ], 401);
-            }
-        });
+    public function logout(Request $request)
+    {
+        try {
+            $user = getUserFromToken($request->bearerToken());
+            $user->tokens()->delete();
+            return response()->json([
+                'message' => 'Logged out successfully'
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage()
+            ], Response::HTTP_FORBIDDEN);
+        }
     }
-
-    // public function logout()
-    // {
-    //     try {
-    //         Auth::logout();
-    //         $user = auth()->user();
-    //         $user->tokens()->delete();
-    //         return response()->json([
-    //             'message' => 'Logged out successfully'
-    //         ]);
-    //     } catch (\Throwable $th) {
-    //         return response()->json([
-    //             'message' => $th->getMessage()
-    //         ], 401);
-    //     }
-    // }
 }
