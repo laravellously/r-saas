@@ -25,8 +25,8 @@
                             <span class="text-4xl font-extrabold text-gray-900" x-text="annual ? '$50' : '$5'"></span>
                             <span class="text-base font-medium text-gray-500" x-text="annual ? '/yr' : '/mo'"></span>
                         </p>
-                        <a href="#"
-                            class="block w-full py-2 mt-8 text-sm font-semibold text-center text-white bg-gray-800 border border-gray-800 rounded-md hover:bg-gray-900">Buy
+                        <a data-plan="42959"
+                            class="block w-full py-2 checkout cursor-pointer mt-8 text-sm font-semibold text-center text-white bg-gray-800 border border-gray-800 rounded-md hover:bg-gray-900">Buy
                             Hobby</a>
                     </div>
                     <div class="px-6 pt-6 pb-8">
@@ -67,8 +67,8 @@
                             <span class="text-4xl font-extrabold text-gray-900" x-text="annual ? '$200' : '$24'"></span>
                             <span class="text-base font-medium text-gray-500" x-text="annual ? '/yr' : '/mo'"></span>
                         </p>
-                        <div data-plan="42959"
-                            class="block w-full py-2 mt-8 text-sm font-semibold text-center text-white bg-gray-800 border border-gray-800 rounded-md cursor-pointer checkout hover:bg-gray-900">Buy
+                        <div
+                            class="block w-full py-2 mt-8 text-sm font-semibold text-center text-white bg-gray-800 border border-gray-800 rounded-md cursor-pointer hover:bg-gray-900">Buy
                             Freelancer</div>
                     </div>
                     <div class="px-6 pt-6 pb-8">
@@ -120,7 +120,7 @@
                             <span class="text-4xl font-extrabold text-gray-900" x-text="annual ? '$350' : '$30'"></span>
                             <span class="text-base font-medium text-gray-500" x-text="annual ? '/yr' : '/mo'"></span>
                         </p>
-                        <a href="#"
+                        <a
                             class="block w-full py-2 mt-8 text-sm font-semibold text-center text-white bg-gray-800 border border-gray-800 rounded-md hover:bg-gray-900">Buy
                             Startup</a>
                     </div>
