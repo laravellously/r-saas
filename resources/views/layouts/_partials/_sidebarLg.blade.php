@@ -2,8 +2,8 @@
     <!-- Sidebar component, swap this element with another sidebar if you like -->
     <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto bg-cyan-700">
         <div class="flex items-center flex-shrink-0 px-4">
-            <img class="w-auto h-8" src="https://tailwindui.com/img/logos/easywire-logo-cyan-300-mark-white-text.svg"
-                alt="Easywire logo">
+            <img class="w-auto h-8" src="{{ asset('rimplenet.png') }}"
+                alt="Rimplenet logo">
         </div>
         <nav class="flex flex-col flex-1 mt-5 overflow-y-auto divide-y divide-cyan-800" aria-label="Sidebar">
             <div class="px-2 space-y-1">

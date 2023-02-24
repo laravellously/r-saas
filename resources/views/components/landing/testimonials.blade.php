@@ -27,8 +27,7 @@
             <blockquote class="mt-10">
                 <div class="max-w-3xl mx-auto text-2xl font-medium leading-9 text-center text-gray-900">
                     <p>
-                        “Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo expedita voluptas culpa sapiente
-                        alias molestiae. Numquam corrupti in laborum sed rerum et corporis.”
+                        “Rimplenet is an excellent financial backend solution. It is very easy to use and has a lot of features. The customer support is also fantastic. I highly recommend Rimplenet to anyone looking for a financial backend solution.”
                     </p>
                 </div>
                 <footer class="mt-8">
