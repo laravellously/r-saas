@@ -20,6 +20,8 @@ Route::view('/', 'landing')->name('landing');
 Route::post('checkout', [SubscriptionController::class, 'checkout'])->name('checkout');
 Route::post('paddle/webhook', [SubscriptionController::class, 'webhook'])->name('webhook');
 
+Route::post('demo', [SubscriptionController::class, 'demo'])->name('demo');
+
 Route::view('pricing', 'pricing')
     ->name('pricing');
 

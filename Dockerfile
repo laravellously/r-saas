@@ -13,11 +13,7 @@ RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 RUN apt-get install -y nodejs
 
 RUN npm i && npm run build
-# Optimizing Configuration loading
-# RUN php artisan config:cache
-# Optimizing Route loading
-# # RUN php artisan route:cache
-# Optimizing View loading
-# RUN php artisan view:cache
 
 RUN chown -R application:application .
+
+RUN php artisan storage:link

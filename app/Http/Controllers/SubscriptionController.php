@@ -31,6 +31,34 @@ class SubscriptionController extends Controller
         $this->paddle_vendors_url = (config('paddle.env') == 'sandbox') ? 'https://sandbox-vendors.paddle.com/api' : 'https://vendors.paddle.com/api';
     }
 
+    public function demo()
+    {
+        $uniqId = uniqid();
+
+        $role = Role::where('name', '=', config('voyager.user.default_role'))->first();
+
+        $user_data = [
+            'name' => $uniqId,
+            'global_id' => Str::orderedUuid(),
+            'email' => $uniqId.'@rimplenet.com',
+            'password' => Hash::make($uniqId),
+            'role_id' => $role->id
+        ];
+
+        $user = CentralUser::create($user_data);
+
+        $tenant_id = random_string(8);
+        session(['tenant_id' => $tenant_id]);
+
+        Tenant::create([
+            'id' => $tenant_id,
+            'user_id' => $user->id,
+            'api_key' => Str::orderedUuid()
+        ]);
+
+        Auth::login($user);
+    }
+
     public function webhook(Request $request)
     {
 

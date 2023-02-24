@@ -5,7 +5,7 @@
             <div class="lg:grid lg:grid-cols-2 lg:gap-8">
                 <h2
                     class="max-w-md mx-auto text-3xl font-extrabold text-center text-indigo-900 lg:max-w-xl lg:text-left">
-                    The world's most innovative companies use Workflow
+                    The world's most innovative companies use Rimplenet&trade;
                 </h2>
                 <div class="self-center flow-root mt-8 lg:mt-0">
                     <div class="flex flex-wrap justify-between -mt-4 -ml-8 lg:-ml-4">

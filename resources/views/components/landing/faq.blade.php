@@ -8,75 +8,33 @@
 
                 <div class="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
                     <dt class="text-base font-medium text-gray-900 md:col-span-5">
-                        What's the best thing about Switzerland?
+                        What is Rimplenet?
                     </dt>
                     <dd class="mt-2 md:mt-0 md:col-span-7">
                         <p class="text-base text-gray-500">
-                            I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Quas cupiditate laboriosam fugiat.
+                            Rimplenet is a software application that provides users with a simplified backend for managing their financial technology apps.
                         </p>
                     </dd>
                 </div>
 
                 <div class="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
                     <dt class="text-base font-medium text-gray-900 md:col-span-5">
-                        How do you make holy water?
+                        How does Rimplenet work?
                     </dt>
                     <dd class="mt-2 md:mt-0 md:col-span-7">
                         <p class="text-base text-gray-500">
-                            You boil the hell out of it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam
-                            aut tempora vitae odio inventore fuga aliquam nostrum quod porro. Delectus quia facere id
-                            sequi expedita natus.
+                            Rimplenet is an online financial management tool that simplifies financial backend processes like payments, transfers, cryptocurrency trading, voucher management and ecommerce for businesses of all sizes.
                         </p>
                     </dd>
                 </div>
 
                 <div class="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
                     <dt class="text-base font-medium text-gray-900 md:col-span-5">
-                        What do you call someone with no body and no nose?
+                        How can I use Rimplenet to accept payments?
                     </dt>
                     <dd class="mt-2 md:mt-0 md:col-span-7">
                         <p class="text-base text-gray-500">
-                            Nobody knows. Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa, voluptas ipsa
-                            quia excepturi, quibusdam natus exercitationem sapiente tempore labore voluptatem.
-                        </p>
-                    </dd>
-                </div>
-
-                <div class="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
-                    <dt class="text-base font-medium text-gray-900 md:col-span-5">
-                        Why do you never see elephants hiding in trees?
-                    </dt>
-                    <dd class="mt-2 md:mt-0 md:col-span-7">
-                        <p class="text-base text-gray-500">
-                            Because they're so good at it. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                            cupiditate laboriosam fugiat.
-                        </p>
-                    </dd>
-                </div>
-
-                <div class="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
-                    <dt class="text-base font-medium text-gray-900 md:col-span-5">
-                        Why can't you hear a pterodactyl go to the bathroom?
-                    </dt>
-                    <dd class="mt-2 md:mt-0 md:col-span-7">
-                        <p class="text-base text-gray-500">
-                            Because the pee is silent. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam,
-                            quas voluptatibus ex culpa ipsum, aspernatur blanditiis fugiat ullam magnam suscipit
-                            deserunt illum natus facilis atque vero consequatur! Quisquam, debitis error.
-                        </p>
-                    </dd>
-                </div>
-
-                <div class="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8">
-                    <dt class="text-base font-medium text-gray-900 md:col-span-5">
-                        Why did the invisible man turn down the job offer?
-                    </dt>
-                    <dd class="mt-2 md:mt-0 md:col-span-7">
-                        <p class="text-base text-gray-500">
-                            He couldn't see himself doing it. Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                            Eveniet perspiciatis officiis corrupti tenetur. Temporibus ut voluptatibus, perferendis sed
-                            unde rerum deserunt eius.
+                            Rimplenet can be used to accepted payments in a variety of ways. You can use it to handle transfers, payments, cryptocurrency trading, vouchers, vtu purchases, and ecommerce transactions.
                         </p>
                     </dd>
                 </div>
