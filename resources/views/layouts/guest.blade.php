@@ -20,7 +20,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
     <x-notifications />
     @include('layouts.partials.header')
     <div class="font-sans antialiased text-gray-900">

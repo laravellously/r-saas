@@ -75,13 +75,6 @@
                             Start Here
                         </a>
                     </span>
-                @else
-                    <span class="inline-flex rounded-md shadow-sm">
-                        <a href="{{ route('register') }}"
-                            class="inline-flex items-center justify-center px-4 py-2 text-base font-medium leading-6 text-white whitespace-no-wrap transition duration-150 ease-in-out border border-transparent rounded-md bg-cyan-500 hover:bg-cyan-600 focus:outline-none focus:border-cyan-700 focus:shadow-outline-cyan active:bg-cyan-700">
-                            Dashboard
-                        </a>
-                    </span>
                 @endif
             </nav>
 
@@ -125,15 +118,6 @@
                                 Sign in
                             </a>
                         </p>
-                    </div>
-                    @else
-                    <div class="space-y-6">
-                        <span class="flex w-full rounded-md shadow-sm">
-                            <a href="{{ route('register') }}"
-                                class="flex items-center justify-center w-full px-4 py-3 text-base font-medium leading-6 text-white transition duration-150 ease-in-out border border-transparent rounded-md bg-cyan-600 hover:bg-cyan-500 focus:outline-none focus:border-cyan-700 focus:shadow-outline-cyan active:bg-cyan-700">
-                                Dashboard
-                            </a>
-                        </span>
                     </div>
                     @endif
                 </div>
